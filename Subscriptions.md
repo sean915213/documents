@@ -1,11 +1,10 @@
 # In App Subscriptions
 This document explains the proposed flow for Stocksnips In-App Subscriptions.
 
-### Proposed Classes
+## Proposed Classes
 The following new classes will be used on the app to work with subscriptions.
 #### Subscription
 The `Subscription` class will contain the most basic information about a subscription level. It will be filled with information from the `OSG_SubscriptionTypes` table.  This class will have the following properties:
- - `id` - The description's id in our database.
  - `description` - A textual description of this subscription level.
  - `name` - The name of this subscription level.
  - `portfolioLimit` - The number of portfolios allowed in a user's holdings for this subscription level.
@@ -23,7 +22,7 @@ The `Subscription` class will contain the most basic information about a subscri
  - `vendor` - The 'vendor' that is providing this subscription.  Possible values would be `apple` or `google`.
  - `receiptData` - This will be the data provided by the vendor which will allow the API to validate the purchase and subsequently check for subscription lapses.
  
- ### API Changes
+ ## API Changes
  The following changes will be made to the API in order to support subscriptions.
  
  #### Products Endpoint
@@ -40,7 +39,16 @@ The `Subscription` class will contain the most basic information about a subscri
  - If subscription information exists for user the API should follow the steps in [Subscription Validation](#subscription-validation) to ensure the subscription has not expired or been cancelled.
  - If subscription information does not exist the `subscription` property should be returned blank.
  
- <a name='subscription-validation'></a>### Subscription Validation
+ #### Token Refresh
+ In addition to the current logic performed during a token refresh the API should also [validate the user's subscription](#subscription-validation).
+ 
+ ## App Changes
+ The following changes will be made to app logic.
+ 
+ #### Subscription Check
+ When fetching the user's profile the app will now need to check for the `subscription` object.  If this object does not exist the app should redirect the user to a flow that allows purchasing a subscription rather than to the user's list of portfolios.
+ 
+ ##<a name='subscription-validation'></a>Subscription Validation
  The following is the logic that the API should follow in order to validate an in-app purchase subscription. **If these validation methods explicitly fail the subscription information should be removed from the db**. Note: explicit failure does not include incidental failures in the pipeline (e.g. unable to contact the vendor's servers for validation). 
  
  #### Apple Validation
@@ -51,7 +59,7 @@ The `Subscription` class will contain the most basic information about a subscri
  - The API should first validate that the resulting response has an http code of `200` and a `status` property of `0`.
  - The API should then pull out the property `latest_receipt_info`.  This is an array of JSON 'receipt' objects describing the subscription purchases.  The following logic should be performed:
    + Find the latest receipt by sorting the receipts on `expires_date_ms`.
-   + Determine whether the last `expires_date_ms` has lapsed.  If it has the subscription has expired and **not** been renewed.
+   + Determine whether the latest `expires_date_ms` has lapsed.  If it has the subscription has expired and **not** been renewed.
  - If the above checks pass then the subscription is valid.  The API should now do the following to update the subscription values in the db:
    + Using the latest receipt found above pull out the property `product_id`.  This corresponds with the subscription's `appleProductId`.  Make sure this value matches the current user's subscription.  If it does not then update the user's subscription.
    + Save the `latest_receipt` value from Apple's response in the db under the user's `subscriptionReceiptData`.
