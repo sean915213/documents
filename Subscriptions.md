@@ -35,3 +35,21 @@ The `Subscription` class will contain the most basic information about a subscri
  
  #### User Profile Fetch
  Currently the app fetches the user's profile (via user/login) in the form of a `LoginServiceResponse` after retrieving/obtaining an access token.  A property should be added to this response called `subscription` that will contain an instance of `UserSubscription` if the user has a current subscription.
+ 
+ ### Receipt Validation
+ The following is the logic that the API should follow in order to validate an in-app purchase receipt.
+ 
+ #### Apple Validation
+ The 'receipt' provided by Apple after a successful in-app purchase (or via subsequent validations) is simply a base64 encoded string.  This string can be validated by following these steps:
+ - A POST request is made to https://buy.itunes.apple.com/verifyReceipt (or https://sandbox.itunes.apple.com/verifyReceipt in development).  This request contains the following fields:
+   + `receipt-data` - The base64 receipt provided by the app.
+   + `password` - A password shared between the API and Apple.
+ - The API should first validate that the resulting response has an http code of `200` and a `status` property of `0`.
+ - The API should then pull out the property `latest_receipt_info`.  This is an array of JSON 'receipt' objects describing the subscription purchases.  The following logic should be performed:
+   + Find the latest receipt by sorting the receipts on `expires_date_ms`.
+   + Determine whether the last `expires_date_ms` has lapsed.  If it has the subscription has expired and **not** been renewed.
+ - If the above checks pass then the subscription is valid.  The API should now do the following to update the subscription values in the db:
+   + Save the `latest_receipt` value from Apple's response in the db under the user's `subscriptionReceiptData`.
+   + Save the `expires_date_ms` value in the db under the user's `subscriptionExpiration`.
+ 
+   
