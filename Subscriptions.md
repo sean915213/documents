@@ -53,7 +53,10 @@ The `Subscription` class will contain the most basic information about a subscri
  
  #### Apple Validation
  The 'receipt' provided by Apple after a successful in-app purchase (or via subsequent validations) is simply a base64 encoded string.  This string can be validated by following these steps:
- - A POST request is made to https://buy.itunes.apple.com/verifyReceipt (or https://sandbox.itunes.apple.com/verifyReceipt in development).  This request contains the following fields:
+ - A POST request is made to one of 2 endpoints:
+   + The first request should always try the production endpoint: https://buy.itunes.apple.com/verifyReceipt.
+   + If the `status` property of this request is `21007` then the test environment url should be used instead: https://sandbox.itunes.apple.com/verifyReceipt.
+ - This POST request contains the following fields:
    + `receipt-data` - The base64 receipt provided by the app.
    + `password` - A password shared between the API and Apple.
  - The API should first validate that the resulting response has an http code of `200` and a `status` property of `0`.
