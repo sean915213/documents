@@ -36,7 +36,7 @@ The `Subscription` class will contain the most basic information about a subscri
  
  #### User Profile Fetch
  Currently the app fetches the user's profile (via user/login) in the form of a `LoginServiceResponse` after retrieving/obtaining an access token.  A property should be added to this response called `subscription`.  The API will provide this value using the following logic:
- - If subscription information exists for user the API should follow the steps in [Subscription Validation](#subscription-validation) to ensure the subscription has not expired or been cancelled.
+ - If subscription information exists for user the API should follow the steps in [Subscription Validation](#subscription-validation) to ensure the subscription has not expired, been cancelled, or changed.
  - If subscription information does not exist the `subscription` property should be returned blank.
  
  #### Token Refresh
