@@ -5,7 +5,7 @@ This document explains the proposed flow for Stocksnips In-App Subscriptions.
 The following new classes will be used on the app to work with subscriptions.
 #### Subscription
 The `Subscription` class will contain the most basic information about a subscription level. It will be filled with information from the `OSG_SubscriptionTypes` table.  This class will have the following properties:
- - `description` - A textual description of this subscription level.
+ - `productDescription` - A textual description of this subscription level.
  - `name` - The name of this subscription level.
  - `portfolioLimit` - The number of portfolios allowed in a user's holdings for this subscription level.
  - `fee` - The monthly cost of this subscription.
