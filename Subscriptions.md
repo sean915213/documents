@@ -8,9 +8,12 @@ The `Subscription` class will contain the most basic information about a subscri
  - `productDescription` - A textual description of this subscription level.
  - `name` - The name of this subscription level.
  - `portfolioLimit` - The number of portfolios allowed in a user's holdings for this subscription level.
- - `fee` - The monthly cost of this subscription.
- - `appleProductId` - The associated Apple product identifier for this subscription.
- - `googleProductId` - The associated Google product identifier for this subscription (need more info on this).
+ - `feeMonthly` - The monthly cost of this subscription.
+ - `feeAnnual` - The annual cost of this subscription.
+ - `appleProductIdMonthly` - The associated Apple product identifier for a monthly subscription.
+ - `appleProductIdAnnual` - The associated Apple product identifer for an annual subscription.
+ - `googleProductIdMonthly` - The associated Google product identifier for a monthly subscription.
+ - `googleProductIdAnnual` - The associated Google product identifier for an annual subscription.
  
  #### UserSubscription
  The `UserSubscription` class will inherit from `Subscription`.  It will contain additional information specific to a user's current subscription.  In addition to those from `Subscription`, this class will have the following properties:
