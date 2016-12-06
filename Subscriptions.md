@@ -14,6 +14,8 @@ The `Subscription` class will contain the most basic information about a subscri
  - `appleProductIdAnnual` - The associated Apple product identifer for an annual subscription.
  - `googleProductIdMonthly` - The associated Google product identifier for a monthly subscription.
  - `googleProductIdAnnual` - The associated Google product identifier for an annual subscription.
+ - `featuresPrefix` - The text to show on top of the benefits line items when displaying subscription info.
+ - `featuresLineItems` - An array of strings to show, each on their own line, below the featuresPrefix when displaying the subscription info.
  
  #### UserSubscription
  The `UserSubscription` class will inherit from `Subscription`.  It will contain additional information specific to a user's current subscription.  In addition to those from `Subscription`, this class will have the following properties:
