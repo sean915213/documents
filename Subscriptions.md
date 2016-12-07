@@ -26,6 +26,7 @@ The `Subscription` class will contain the most basic information about a subscri
  The `SubscriptionOrder` class will be used to submit new subscription data to the API after a subscription has been purchased.  The following properties will be included:
  - `vendor` - The 'vendor' that is providing this subscription.  Possible values would be `apple` or `google`.
  - `receiptData` - This will be the data provided by the vendor which will allow the API to validate the purchase and subsequently check for subscription lapses.
+ - `isFreeSubscription` - Indicates whether the user is purchasing a free subscription.  If this is true then the `receiptData` property should be empty.
  
  ## API Changes
  The following changes will be made to the API in order to support subscriptions.
