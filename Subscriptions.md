@@ -45,9 +45,6 @@ The `Subscription` class will contain the most basic information about a subscri
  - If subscription information exists for user the API should follow the steps in [Subscription Validation](#subscription-validation) to ensure the subscription has not expired, been cancelled, or changed.
  - If subscription information does not exist the `subscription` property should be returned blank.
  
- #### Token Refresh
- In addition to the current logic performed during a token refresh the API should also [validate the user's subscription](#subscription-validation).
- 
  ## App Changes
  The following changes will be made to app logic.
  
